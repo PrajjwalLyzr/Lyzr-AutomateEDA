@@ -2,7 +2,7 @@
 
 ![Lyzr Logo](lyzr-logo.png)
 
-Write a description of your app.
+Automate EDA application will automate the Exploratory data analusis with help of Lyzr DataAnalyzr Agent, this agent will perform all the analysis operations on top the data which was provided by user.
 
 *Note: For this application to function properly in your local system, ensure that the required dependencies are installed and configured correctly, and make sure that you have your OpenAI API Key.*
 
