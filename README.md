@@ -1,6 +1,6 @@
 # Welcome to the Automate EDA by Lyzr!
 
-![Lyzr Logo](logo\lyzr-logo.png)
+![Lyzr Logo](./logo/lyzr-logo.png)
 
 This application will automate the Exploratory data analysis with help of Lyzr Agent, this agent will perform all the analysis operations on top the data which was provided by user.
 Operations are:
