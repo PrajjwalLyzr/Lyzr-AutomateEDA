@@ -1,28 +1,37 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-import inspect
-import textwrap
-
+import os
+import shutil
 import streamlit as st
 
+def remove_existing_files(directory):
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            st.error(f"Error while removing existing files: {e}")
 
-def show_code(demo):
-    """Showing the code of the demo."""
-    show_code = st.sidebar.checkbox("Show code", True)
-    if show_code:
-        # Showing the code of the demo.
-        st.markdown("## Code")
-        sourcelines, _ = inspect.getsourcelines(demo)
-        st.code(textwrap.dedent("".join(sourcelines[1:])))
+
+def get_files_in_directory(directory):
+    # This function help us to get the file path along with filename.
+    files_list = []
+
+    if os.path.exists(directory) and os.path.isdir(directory):
+        for filename in os.listdir(directory):
+            file_path = os.path.join(directory, filename)
+            
+            if os.path.isfile(file_path):
+                files_list.append(file_path)
+
+    return files_list
+
+def save_uploaded_file(uploaded_file):
+    # Function to save uploaded file
+    remove_existing_files('data')
+
+    file_path = os.path.join('data', uploaded_file.name)
+    with open(file_path, "wb") as file:
+        file.write(uploaded_file.read())
+    st.success("File uploaded successfully")
