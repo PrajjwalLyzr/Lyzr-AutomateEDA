@@ -17,7 +17,7 @@ os.makedirs(plot, exist_ok=True)
 
 # Setup your config
 st.set_page_config(
-    page_title="LyzrVoice DocuFill",
+    page_title="Automate EDA",
     layout="centered",  # or "wide" 
     initial_sidebar_state="auto",
     page_icon="./logo/lyzr-logo-cut.png"
