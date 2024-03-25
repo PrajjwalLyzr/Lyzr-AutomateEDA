@@ -61,8 +61,26 @@ def analyzr():
     path = utils.get_files_in_directory(data)
     path = path[0]
 
-    dataframe = DataConnector().fetch_dataframe_from_csv(file_path=Path(path))
-    analyzr = DataAnalyzr(df=dataframe, api_key=apikey)
+    datafiles = {
+		"dataset": path,
+    }
+
+   
+
+    analyzr = DataAnalyzr(analysis_type='ml', api_key=apikey)
+     # Call the get_data method
+    analyzr.get_data(
+            db_type = "files",
+            config = {
+                    "datasets": datafiles,
+                    
+            },
+            vector_store_config = {
+				"pass": "password", 
+				"remake": False
+		}
+           
+    )
 
     return analyzr
 
@@ -77,22 +95,18 @@ def file_checker():
 
 # Function to display the dataset description
 def display_description(analyzr):
+    # deprecated in future versions
     description = analyzr.dataset_description()
     if description is not None:
         st.subheader("Dataset Description:")
         st.write(description)
  
 
-# Function to display recommended analysis
-def display_recommended_analysis(analyzr):
-    analysis = analyzr.analysis_recommendation()
-    if analysis is not None:
-        st.subheader("These Analysis you can do on the data:")
-        st.write(analysis)
    
 
 # Function to display queries
 def display_queries(analyzr):
+    # deprecated in future verions
     queries = analyzr.ai_queries_df()
     if queries is not None:
         st.subheader("These Queries you can run on the data:")
@@ -100,14 +114,20 @@ def display_queries(analyzr):
     
 
 
-# Function to display analysis
-def display_analysis(analyzr):
+# Function to display insights
+def display_insights(analyzr):
     query =  st.text_input("Write your query")
     if st.button("Submit"):
-        analysis = analyzr.analysis_insights(user_input=query)
-        if analysis is not None:
-            st.subheader("Analysis according to your query:")
-            st.write(analysis)
+        insights = analyzr.ask(
+           
+            user_input = query,
+            outputs = ["insights"]
+
+        )
+        # analysis = analyzr.analysis_insights(user_input=query)
+        if insights is not None:
+            st.subheader("Insights according to your query:")
+            st.write(insights['insights'])
 
 
 
@@ -116,24 +136,33 @@ def display_analysis(analyzr):
 def display_recommendation(analyzr):
     query =  st.text_input("Write your query")
     if st.button("Submit"):
-        recommendation = analyzr.analysis_insights(user_input=query)
+        # recommendation = analyzr.analysis_insights(user_input=query)
+        recommendation = analyzr.ask(
+            user_input = query,
+            outputs = ["recommendations"]
+        )
         if recommendation is not None:
             st.subheader("Recommendations based on the analysis insights:")
-            st.write(recommendation)
+            st.write(recommendation['recommendations'])
 
 
 
-# Function to display Visualization
-def visualization_for_analysis(analyzr):
-    query =  st.text_input("Write your analysis query")
+# # Function to display Visualization
+# def visualization_for_analysis(analyzr):
+#     query =  st.text_input("Write your analysis query")
 
-    if st.button("Submit"):
-        utils.remove_existing_files(plot)
-        visualiation = analyzr.visualizations(user_input=query, dir_path=Path('./plot'))
-        plot_files = os.listdir("./plot")
-        for plot_file in plot_files:
-            st.subheader(f'Visualization: {query}')
-            st.image(f"./plot/{plot_file}")
+#     if st.button("Submit"):
+#         utils.remove_existing_files(plot)
+#         visualiation = analyzr.ask(
+#                 query,
+#                 outputs = ["visualisation"],
+#                 plot_path = Path(f'./plot/{query[:12]}.png')
+#         )
+#         # visualiation = analyzr.visualisation(user_input=query, plot_path=Path('./plot'))
+#         plot_files = os.listdir("./plot")
+#         for plot_file in plot_files:
+#             st.subheader(f'Visualization: {query}')
+#             st.image(f"./plot/{plot_file}")
        
 
 if __name__ == "__main__":
@@ -149,21 +178,19 @@ if __name__ == "__main__":
             analyzr = analyzr()
             # create buttons
             st.header("Select an Action")
-            options = ['Select',"Description", "Recommended Analysis", "Queries", "Analysis", "Recommendation", "Visualization"]
+            options = ['None',"Description", "Queries", "Insights", "Recommendation"]
             selected_option = st.radio("Select an option", options)
 
             if selected_option == "Description":
                 display_description(analyzr)
-            elif selected_option == "Recommended Analysis":
-                display_recommended_analysis(analyzr)
             elif selected_option == "Queries":
                 display_queries(analyzr)
-            elif selected_option == "Analysis":
-                display_analysis(analyzr)
+            elif selected_option == "Insights":
+                display_insights(analyzr)
             elif selected_option == "Recommendation":
                 display_recommendation(analyzr)
-            elif selected_option == "Visualization":
-                visualization_for_analysis(analyzr)
+            # elif selected_option == "Visualization":
+            #     visualization_for_analysis(analyzr)
 
         else:
             st.error("Please upload csv file")

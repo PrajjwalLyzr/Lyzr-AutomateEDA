@@ -5,12 +5,11 @@
 This application will automate the Exploratory data analysis with help of Lyzr Agent, this agent will perform all the analysis operations on top the data which was provided by user.
 Operations are:
 
-- Get Analysis: This operation enables you to ask questions directly related to the data at hand.
-- Get Visualization: It generates one or more visualizations, on top of the user query.
+
 - Dataset Description: It provides an automatically generated summary of the dataset.
 - Queries for Analysis: This method generates queries tailored to the dataset.
 - Recommendations for Analysis: It guides user on the types of analysis that would be most valuable to perform on their DataFrame based on the data provided.
-- Recommendations: It returns various categories of queries, such as exploratory, regression, correlation, clustering, and time series analyses.
+
 
 
 *Note: For this application to function properly in your local system, ensure that the required dependencies are installed and configured correctly, and make sure that you have your OpenAI API Key.*
@@ -37,3 +36,4 @@ Lyzr is a low-code agent framework that follows an **‘agentic’** way to buil
 - [Lyzr](https://www.lyzr.ai/)
 - [Book a Demo](https://www.lyzr.ai/book-demo/)
 - [Discord](https://discord.gg/nm7zSyEFA2)
+- [Slack](https://join.slack.com/t/genaiforenterprise/shared_invite/zt-2a7fr38f7-_QDOY1W1WSlSiYNAEncLGw)
